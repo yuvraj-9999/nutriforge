@@ -8,7 +8,12 @@ import aiRoutes from "./routes/ai.routes.js";
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+  })
+);
 app.use(helmet());
 app.use(morgan("dev"));
 

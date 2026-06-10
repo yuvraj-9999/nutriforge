@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+  <!-- Dark charcoal background square -->
+  <rect width="24" height="24" fill="#131211" rx="5"/>
+  <!-- Dim base ring -->
+  <circle cx="12" cy="12" r="8" stroke="#2D2C2A" stroke-width="1.4"/>
+  <!-- Forged copper arc — top-center clockwise to lower-right, open break at bottom-left -->
+  <path
+    d="M12 4C16.418 4 20 7.582 20 12C20 14.8 18.4 17.2 16 18.8"
+    stroke="#B2967D"
+    stroke-width="2.8"
+    stroke-linecap="round"
+    fill="none"
+  />
+  <!-- Anchor dot at arc start (top of ring) -->
+  <circle cx="12" cy="4" r="1.1" fill="#B2967D"/>
+</svg>

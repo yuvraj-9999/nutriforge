@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background-color: #131211;
+    color: #F5F4F2;
+    min-height: 100dvh;
+  }
+
+  ::selection {
+    background: rgba(178, 150, 125, 0.22); /* Restrained brushed copper */
+    color: #F5F4F2;
+  }
+
+  /* Grounded sleek scrollbars */
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(245, 244, 242, 0.1);
+    border-radius: 99px;
+  }
+
+  input::placeholder {
+    color: #5C5854;
+  }
+}
+
+.animate-skeleton {
+  animation: pulse-shimmer 1.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  border-radius: 0.5rem;
+}
+
+@keyframes pulse-shimmer {
+  0%, 100% {
+    background-color: rgba(255, 255, 255, 0.03);
+  }
+  50% {
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+}
+

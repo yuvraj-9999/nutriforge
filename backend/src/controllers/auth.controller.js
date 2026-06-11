@@ -78,8 +78,6 @@ export const updateProfile = async (req, res) => {
     try {
         const userId = req.user.userId;
 
-
-
         const updatedUser = await User.findByIdAndUpdate(
             userId,
             {
@@ -95,9 +93,6 @@ export const updateProfile = async (req, res) => {
             user: updatedUser,
         })
     } catch (error) {
-
-
-
         res.status(500).json({
             message: error.message || "Internal server error",
         });
@@ -124,24 +119,12 @@ export const getProfile = async (req, res) => {
 
 export const testAI = async (req, res) => {
     try {
-
-        const result = await model.generateContent(
-            "Say hello in one sentence"
-        );
-
+        const result = await model.generateContent("Say hello in one sentence");
         const response = result.response.text();
-
-        res.json({
-            response,
-        });
-
+        res.json({ response });
     } catch (error) {
-
-        console.log(error);
-
         res.status(500).json({
             message: error.message,
         });
-
     }
 };

@@ -56,6 +56,7 @@ const Wordmark = () => (
 // ─── Navigation links definition ──────────────────────────────
 const NAV_LINKS = [
   { label: "Dashboard", to: "/dashboard" },
+  { label: "Coach",     to: "/coach"     },
   { label: "Profile",   to: "/profile"   },
 ];
 

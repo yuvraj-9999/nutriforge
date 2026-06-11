@@ -7,17 +7,18 @@ import { loginUser } from "../services/auth.services.js";
 import { useAuth } from "../context/AuthContext.jsx";
 import InputField from "../components/InputField.jsx";
 
+
 // ─── Grounded Mature Palette ──────────────────────────────────
 const C = {
-  bg:           "#131211",  // deep warm smoked charcoal base
-  card:         "#1B1A19",  // warm graphite card surface
-  accent:       "#B2967D",  // organic brushed copper highlight
+  bg:           "#131211",
+  card:         "#1B1A19",
+  accent:       "#B2967D",
   accentHover:  "#C3A58C",
-  text:         "#F5F4F2",  // warm ivory
-  sub:          "#9E9790",  // muted stone gray
-  muted:        "#5C5854",  // dark stone placeholder
-  faint:        "rgba(255, 255, 255, 0.03)",  // hairline card dividers
-  danger:       "#D26E64",  // soft red error text
+  text:         "#F5F4F2",
+  sub:          "#9E9790",
+  muted:        "#5C5854",
+  faint:        "rgba(255, 255, 255, 0.03)",
+  danger:       "#D26E64",
   dangerBg:     "rgba(210, 110, 100, 0.04)",
   dangerBorder: "rgba(210, 110, 100, 0.15)",
   cardBorder:   "rgba(255, 255, 255, 0.03)",
@@ -50,10 +51,6 @@ const GrainTexture = () => (
   </svg>
 );
 
-// ─── Sculpted Tapered Loop Brand Mark ─────────────────────────
-// An outer structural baseline ring representing the consistency of time,
-// with a tapered linear-gradient arc transitioning from Ivory to Brushed Copper
-// to represent the refinement of raw potential.
 const BrandMark = () => (
   <div
     style={{
@@ -66,16 +63,13 @@ const BrandMark = () => (
     aria-hidden="true"
   >
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Base structural track representing consistency / loop */}
       <circle cx="12" cy="12" r="9.5" stroke="#2C2A29" strokeWidth="1.2" />
-      {/* Precision forged wedge track showing raw potential transitioning to polished ivory & copper */}
       <path
         d="M12 2.5C17.25 2.5 21.5 6.75 21.5 12C21.5 15.5 19.5 18.5 16.5 20.5"
         stroke="url(#refine-grad)"
         strokeWidth="3.2"
         strokeLinecap="round"
       />
-      {/* Small marker dot at the starting point of the cut, showing target precision */}
       <circle cx="12" cy="2.5" r="1.2" fill="#B2967D" />
       <defs>
         <linearGradient id="refine-grad" x1="12" y1="2.5" x2="16.5" y2="20.5" gradientUnits="userSpaceOnUse">
@@ -88,7 +82,6 @@ const BrandMark = () => (
   </div>
 );
 
-// ─── Brand Wordmark (Editorial Casing & Weight) ───────────────
 const Wordmark = () => (
   <div className="flex items-baseline select-none font-sans">
     <span
@@ -159,9 +152,6 @@ const Spinner = () => (
   </svg>
 );
 
-// ═════════════════════════════════════════════════════════════
-// LoginPage — Refined Grounded redone (No AI suffix)
-// ═════════════════════════════════════════════════════════════
 const LoginPage = () => {
   const { login, isAuthenticated }  = useAuth();
   const navigate   = useNavigate();
@@ -202,27 +192,35 @@ const LoginPage = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validate()) return;
-    setLoading(true);
-    setApiError("");
-    try {
-      const data = await loginUser({
-        email:    form.email.trim().toLowerCase(),
-        password: form.password,
-      });
-      login(data.user, data.token);
-      navigate("/dashboard", { replace: true });
-    } catch (err) {
-      setApiError(
-        err?.response?.data?.message ||
-        err?.message ||
-        "Incorrect email or password. Please try again."
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+  e.preventDefault();
+
+  if (!validate()) return;
+
+  setLoading(true);
+  setApiError("");
+
+  try {
+    const data = await loginUser({
+      email: form.email.trim().toLowerCase(),
+      password: form.password,
+    });
+
+    login(data.user, data.token);
+
+    navigate("/dashboard", {
+      replace: true,
+    });
+
+  } catch (err) {
+    setApiError(
+      err?.response?.data?.message ||
+      err?.message ||
+      "Incorrect email or password. Please try again."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div 

@@ -5,6 +5,7 @@ import RegisterPage from "./pages/RegisterPage";
 import DashboardPage from "./pages/DashboardPage";
 import PlanPage from "./pages/PlanPage";
 import ProfilePage from "./pages/ProfilePage";
+import CoachPage from "./pages/CoachPage";
 import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
         <Route path="/plans/:id" element={<ProtectedRoute><PlanPage /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+        <Route path="/coach" element={<ProtectedRoute><CoachPage /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   );

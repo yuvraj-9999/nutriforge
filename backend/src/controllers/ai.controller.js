@@ -779,13 +779,11 @@ export const activatePlan = async (req, res) => {
       });
     }
 
-    // Deactivate all existing user plans
     await Plan.updateMany(
       { user: userId },
       { isActive: false }
     );
 
-    // Activate the selected plan
     plan.isActive = true;
     await plan.save();
 

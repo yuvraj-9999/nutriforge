@@ -1,10 +1,10 @@
 # NutriForge
 
-Precision nutrition and performance intelligence.
+**Precision nutrition and performance intelligence.**
 
 NutriForge is a premium AI-powered fitness and nutrition platform designed to help users build sustainable performance systems through personalized meal planning, workout structuring, recovery optimization, and long-term consistency tracking.
 
-Built with a modern noir-inspired interface and backend-driven architecture, NutriForge combines intelligent AI plan generation with clean product-focused UX.
+Built with a modern noir-inspired interface and backend-driven architecture, NutriForge combines intelligent AI plan generation, AI coaching, and clean product-focused UX.
 
 ---
 
@@ -26,6 +26,15 @@ Built with a modern noir-inspired interface and backend-driven architecture, Nut
 * Vegetarian and vegan compliance checks
 * Multiple saved plans per user
 * Manual active plan switching
+
+### AI Coach
+
+* AI-powered fitness and nutrition assistant
+* Personalized guidance based on user goals
+* Nutrition and meal-related recommendations
+* Workout and recovery suggestions
+* Context-aware conversational support
+* Powered by Google Gemini AI
 
 ### Dashboard Experience
 
@@ -78,6 +87,8 @@ Built with a modern noir-inspired interface and backend-driven architecture, Nut
 ### AI
 
 * Google Gemini API
+* AI Plan Generation
+* AI Coaching Assistant
 
 ### Deployment
 
@@ -116,16 +127,12 @@ git clone https://github.com/yuvraj-9999/nutriforge.git
 cd nutriforge
 ```
 
----
-
 ### Install Frontend Dependencies
 
 ```bash
 cd client
 npm install
 ```
-
----
 
 ### Install Backend Dependencies
 
@@ -152,7 +159,7 @@ cd client
 npm run dev
 ```
 
-
+---
 
 ## Project Structure
 
@@ -183,11 +190,12 @@ NutriForge/
 * Email verification
 * Grocery list generation
 * Meal completion tracking
-* Advanced analytics
-* Progress charts
+* Advanced analytics dashboard
+* Progress charts and visual insights
 * Social accountability systems
-* AI coaching assistant
+* Voice-enabled AI coach
 * PWA/mobile app support
+* Wearable device integrations
 
 ---
 
@@ -199,4 +207,4 @@ This project is licensed under the MIT License.
 
 ## Author
 
-Built by the Yuvraj Sabale.
+Built by Yuvraj Sabale.

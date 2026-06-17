@@ -145,9 +145,12 @@ export const chatWithCoach = async (req, res) => {
 
 
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message || "Internal server error",
-        });
-    }
+    console.error("COACH ERROR:");
+    console.error(error);
+
+    return res.status(500).json({
+        success: false,
+        message: error.message || "Internal server error",
+    });
+}
 };

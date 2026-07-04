@@ -235,7 +235,7 @@ const CoachPage = () => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages, sending]);
+  }, [messages, sending, scrollToBottom]);
 
   // ── Load conversation history on mount ───────────────────────────────────
   useEffect(() => {
@@ -254,7 +254,7 @@ const CoachPage = () => {
       }
     };
     loadHistory();
-  }, []);
+  }, [scrollToBottom]);
 
   // ── Send Message ──────────────────────────────────────────────────────────
   const handleSend = async (overrideText) => {

@@ -2,6 +2,8 @@ import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import model from "../config/gemini.js";
+import crypto from "crypto";
+import { sendPasswordResetEmail } from "../services/email.service.js";
 import { updateProfileSchema } from "../validations/profile.validation.js";
 
 export const signup = async (req, res) => {
@@ -116,6 +118,119 @@ export const getProfile = async (req, res) => {
         });
     }
 };
+
+export const forgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        if (!email) {
+            return res.status(400).json({
+                success: false,
+                message: "Email is required",
+            });
+        }
+        if (!email || typeof email !== "string") {
+            return res.status(400).json({
+                success: false,
+                message: "Valid email is required",
+            });
+        }
+
+        const normalizedEmail = email.trim().toLowerCase();
+
+        const user = await User.findOne({
+            email: normalizedEmail,
+        });
+        if (!user) {
+            return res.json({
+                success: true,
+                message: "If an account with this email exists, a password reset link has been sent."
+            });
+        }
+
+        const resetToken = crypto.randomBytes(32).toString("hex");
+
+        const hashedToken = crypto.createHash("sha256").update(resetToken).digest("hex");
+
+
+        user.passwordResetToken = hashedToken;
+        user.passwordResetExpires = Date.now() + 15 * 60 * 1000;
+
+        await user.save();
+
+        const resetLink = `${process.env.APP_URL}/reset-password/${resetToken}`;
+
+        const emailResponse = await sendPasswordResetEmail(user.email, user.name, resetLink);
+
+        if (emailResponse.error) {
+            console.error(emailResponse.error);
+
+            return res.status(500).json({
+                success: false,
+                message: "Failed to send password reset email.",
+            });
+        }
+
+        return res.json({
+            success: true,
+            message: "If an account with this email exists, a password reset link has been sent.",
+        });
+
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message || "Internal server error",
+        });
+    }
+};
+
+export const resetPassword = async (req, res) => {
+    try {
+        const { token } = req.params;
+        const { password } = req.body;
+
+        if(!password){
+            return res.status(400).json({
+                success: false,
+                message: "Password is required",
+            });
+        }
+
+        const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
+        const user = await User.findOne({
+            passwordResetToken: hashedToken,
+            passwordResetExpires: {$gt: Date.now()}
+        });
+
+        if(!user){
+            return res.status(400).json({
+                success: false,
+                message: "Invalid or expired password reset token",
+            });
+        }
+
+        user.password = await bcrypt.hash(password, 10);
+        user.passwordResetToken = undefined;
+        user.passwordResetExpires = undefined;
+
+        await user.save();
+
+        return res.json({
+            success: true,
+            message: "Password reset successfully",
+        });
+
+    } catch (error) {
+        console.error("RESET PASSWORD ERROR:");
+        console.error(error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to reset password.",
+        });
+    }
+}
 
 export const testAI = async (req, res) => {
     try {

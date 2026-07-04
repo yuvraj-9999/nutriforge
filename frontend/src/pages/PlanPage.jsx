@@ -3,12 +3,10 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   HiOutlineChevronLeft,
-  HiOutlineCalendar,
   HiOutlineSparkles,
   HiOutlineTrash
 } from "react-icons/hi";
 
-import { useAuth } from "../context/AuthContext";
 import { getPlanById, regeneratePlan, deletePlan, activatePlan } from "../services/auth.services";
 import MainLayout from "../layouts/MainLayout";
 
@@ -59,7 +57,6 @@ const PlanSkeletonLoader = () => (
 // ═════════════════════════════════════════════════════════════
 const PlanPage = () => {
   const { id } = useParams();
-  const { user } = useAuth();
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
@@ -156,11 +153,6 @@ const PlanPage = () => {
     } finally {
       setDeleting(false);
     }
-  };
-
-  const handleSignOut = () => {
-    logout();
-    navigate("/", { replace: true });
   };
 
   // ── Parsing Meal Suggestions Helper ──

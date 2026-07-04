@@ -6,7 +6,6 @@ import {
   HiOutlineSave,
 } from "react-icons/hi";
 
-import { useAuth } from "../context/AuthContext";
 import { getProfile, updateProfile } from "../services/auth.services";
 import InputField from "../components/InputField";
 import MainLayout from "../layouts/MainLayout";
@@ -96,7 +95,6 @@ const Spinner = () => (
 // ProfilePage
 // ═════════════════════════════════════════════════════════════
 const ProfilePage = () => {
-  const { user } = useAuth();
   const navigate = useNavigate();
 
   // ── Form State ──

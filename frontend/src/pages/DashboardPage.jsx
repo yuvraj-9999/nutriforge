@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   HiOutlinePlus,
   HiOutlineMinus,
-  HiOutlineTrendingUp,
   HiOutlineSparkles,
   HiOutlineCalendar,
   HiOutlineFire,
@@ -14,7 +13,6 @@ import {
   HiOutlineCheckCircle,
   HiOutlineLightningBolt,
   HiOutlineChevronRight,
-  HiOutlineRefresh,
 } from "react-icons/hi";
 
 import { useAuth } from "../context/AuthContext";
@@ -244,9 +242,8 @@ const DashboardPage = () => {
     }
   };
 
-  useEffect(() => {
-    loadDashboardData();
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/set-state-in-effect
+  useEffect(() => { loadDashboardData(); }, [user]);
 
   // ── Handlers ──
   const handleCompleteToday = () => {

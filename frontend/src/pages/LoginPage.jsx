@@ -306,6 +306,16 @@ const LoginPage = () => {
                   >
                     Password
                   </label>
+                  <Link
+                    to="/forgot-password"
+                    id="forgot-password-link"
+                    className="text-[12px] transition-colors duration-150"
+                    style={{ color: C.sub }}
+                    onMouseEnter={e => (e.currentTarget.style.color = C.accent)}
+                    onMouseLeave={e => (e.currentTarget.style.color = C.sub)}
+                  >
+                    Forgot password?
+                  </Link>
                 </div>
 
                 <InputField

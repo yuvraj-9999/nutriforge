@@ -4,7 +4,7 @@
 
 NutriForge is an AI-powered fitness and nutrition platform designed to help users build sustainable performance systems through personalized nutrition planning, intelligent workout guidance, recovery optimization, and long-term consistency tracking.
 
-Built using a modern full-stack architecture, NutriForge combines AI-generated performance plans, contextual AI coaching, and a premium user experience to help athletes and fitness enthusiasts achieve measurable results.
+Built using a modern full-stack architecture, NutriForge combines AI-generated performance plans, contextual AI coaching, secure authentication, and a premium user experience to help athletes and fitness enthusiasts achieve measurable results.
 
 ---
 
@@ -17,6 +17,8 @@ Built using a modern full-stack architecture, NutriForge combines AI-generated p
 - Protected routes
 - Persistent authenticated sessions
 - User profile management
+- Password reset via secure email
+- Production-ready session expiration handling
 
 ### AI Performance Plans
 
@@ -34,12 +36,12 @@ Built using a modern full-stack architecture, NutriForge combines AI-generated p
 - Context-aware fitness and nutrition assistant
 - Personalized recommendations using:
   - User profile
-  - Active plan
+  - Active performance plan
   - Conversation history
 - Nutrition guidance
 - Workout support
 - Recovery recommendations
-- Consistency and habit coaching
+- Habit & consistency coaching
 - Powered by Google Gemini AI
 
 ### Dashboard Experience
@@ -67,6 +69,7 @@ Built using a modern full-stack architecture, NutriForge combines AI-generated p
 - Premium dark-themed UI
 - Mobile-first responsive design
 - Framer Motion animations
+- React Hot Toast notifications
 - Persistent local state
 - Elegant onboarding experience
 - Reusable component architecture
@@ -83,6 +86,7 @@ Built using a modern full-stack architecture, NutriForge combines AI-generated p
 - Framer Motion
 - React Router
 - Axios
+- React Hot Toast
 
 ### Backend
 
@@ -91,6 +95,8 @@ Built using a modern full-stack architecture, NutriForge combines AI-generated p
 - MongoDB
 - Mongoose
 - JWT Authentication
+- Bcrypt
+- Resend Email API
 
 ### AI
 
@@ -109,6 +115,7 @@ Built using a modern full-stack architecture, NutriForge combines AI-generated p
 - Vercel (Frontend)
 - Render (Backend)
 - MongoDB Atlas
+- Resend (Transactional Emails)
 
 ---
 
@@ -118,10 +125,17 @@ Built using a modern full-stack architecture, NutriForge combines AI-generated p
 
 ```env
 PORT=5000
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-GEMINI_API_KEY=your_gemini_api_key
 NODE_ENV=development
+
+MONGO_URI=your_mongodb_connection_string
+
+JWT_SECRET=your_jwt_secret
+
+GEMINI_API_KEY=your_gemini_api_key
+
+RESEND_API_KEY=your_resend_api_key
+
+APP_URL=http://localhost:5173
 ```
 
 ### Frontend (.env)
@@ -141,10 +155,6 @@ git clone https://github.com/yuvraj-9999/nutriforge.git
 cd nutriforge
 ```
 
----
-
-## Running Locally
-
 ### Install Backend Dependencies
 
 ```bash
@@ -155,9 +165,13 @@ npm install
 ### Install Frontend Dependencies
 
 ```bash
-cd frontend
+cd ../frontend
 npm install
 ```
+
+---
+
+## Running Locally
 
 ### Start Backend
 
@@ -183,19 +197,19 @@ npm run dev
 - Backend `.env` configured
 - Frontend `.env` configured
 
-### Start Application
-
-```bash
-docker compose up
-```
-
 ### Build & Start Containers
 
 ```bash
 docker compose up --build
 ```
 
-### Stop Application
+### Start Existing Containers
+
+```bash
+docker compose up
+```
+
+### Stop Containers
 
 ```bash
 docker compose down
@@ -215,7 +229,7 @@ docker compose logs -f
 
 After startup:
 
-```txt
+```text
 Frontend → http://localhost:5173
 Backend  → http://localhost:5000
 ```
@@ -224,12 +238,12 @@ Backend  → http://localhost:5000
 
 ## Project Structure
 
-```txt
+```text
 NutriForge/
 │
 ├── frontend/
-│   ├── src/
 │   ├── public/
+│   ├── src/
 │   ├── Dockerfile
 │   └── .dockerignore
 │
@@ -240,6 +254,7 @@ NutriForge/
 │   │   ├── models/
 │   │   ├── routes/
 │   │   ├── services/
+│   │   ├── utils/
 │   │   └── server.js
 │   │
 │   ├── Dockerfile
@@ -258,12 +273,15 @@ NutriForge/
 
 - User Registration
 - User Login
-- JWT Verification
+- JWT Authentication
 - Profile Management
+- Forgot Password
+- Password Reset
+- Secure Session Expiration Handling
 
 ### Performance Plans
 
-- Generate AI Plan
+- Generate AI Performance Plan
 - Regenerate Existing Plan
 - Activate Plan
 - Delete Plan
@@ -279,11 +297,25 @@ NutriForge/
 
 ---
 
+## Security
+
+- Passwords hashed with Bcrypt
+- JWT Authentication
+- Protected API routes
+- Secure password reset tokens
+- SHA-256 hashed reset tokens
+- One-time password reset links
+- Password reset expiration
+- Session expiration handling
+- Environment variable configuration
+- Transactional emails through Resend
+
+---
+
 ## Future Roadmap
 
 ### Version 2
 
-- Password Reset Flow
 - Email Verification
 - Grocery List Generation
 - Meal Completion Tracking
@@ -307,6 +339,14 @@ NutriForge/
 
 ---
 
+## Live Demo
+
+**Frontend**
+
+https://nutriforge.goslings.online
+
+---
+
 ## License
 
 This project is licensed under the MIT License.
@@ -317,4 +357,4 @@ This project is licensed under the MIT License.
 
 **Yuvraj Sabale**
 
-Built with React, Node.js, MongoDB Atlas, Docker, and Google Gemini AI.
+Built using React, Node.js, Express.js, MongoDB Atlas, Docker, Google Gemini AI, and Resend.

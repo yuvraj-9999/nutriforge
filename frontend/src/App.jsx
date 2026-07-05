@@ -10,6 +10,8 @@ import ProfilePage from "./pages/ProfilePage";
 import CoachPage from "./pages/CoachPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
+import VerifyEmailPage from "./pages/VerifyEmailPage";
+import VerifyEmailSentPage from "./pages/VerifyEmailSentPage";
 import ScrollToTop from "./components/ScrollToTop";
 
 // App.jsx is responsible only for application UI:
@@ -56,6 +58,8 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
+        <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
+        <Route path="/verify-email-sent" element={<VerifyEmailSentPage />} />
         <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
         <Route path="/plans/:id" element={<ProtectedRoute><PlanPage /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />

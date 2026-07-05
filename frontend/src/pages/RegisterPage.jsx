@@ -112,36 +112,7 @@ const Wordmark = () => (
   </div>
 );
 
-// ─── Success Banner ──────────────────────────────────────────
-const SuccessBanner = ({ message }) => (
-  <motion.div
-    role="status"
-    className="flex items-start gap-2.5 rounded-lg px-4 py-3 text-[13px] leading-relaxed text-left"
-    style={{
-      background: "rgba(141, 197, 149, 0.04)",
-      border: `1px solid rgba(141, 197, 149, 0.25)`,
-      color: "#8DC595",
-    }}
-    initial={{ opacity: 0, y: -6 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.2, ease: "easeOut" }}
-  >
-    <svg
-      className="mt-0.5 shrink-0"
-      width="14"
-      height="14"
-      viewBox="0 0 14 14"
-      fill="none"
-      aria-hidden="true"
-    >
-      <circle cx="7" cy="7" r="5.5" stroke="currentColor" strokeWidth="1.3" />
-      <path d="M4.5 7.5L6 9L9.5 5.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-    <span>{message}</span>
-  </motion.div>
-);
 
-// ─── Error Banner ────────────────────────────────────────────
 const ErrorBanner = ({ message }) => (
   <AnimatePresence initial={false}>
     {message && (
@@ -206,7 +177,7 @@ const RegisterPage = () => {
   });
   const [fieldErrors, setFieldErrors] = useState({});
   const [apiError, setApiError] = useState("");
-  const [success, setSuccess] = useState(false);
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -247,17 +218,13 @@ const RegisterPage = () => {
     if (!validate()) return;
     setLoading(true);
     setApiError("");
-    setSuccess(false);
     try {
       await registerUser({
         name: form.name.trim(),
         email: form.email.trim().toLowerCase(),
         password: form.password,
       });
-      setSuccess(true);
-      setTimeout(() => {
-        navigate("/", { replace: true });
-      }, 1800);
+      navigate("/verify-email-sent", { replace: true });
     } catch (err) {
       setApiError(
         err?.response?.data?.message ||
@@ -319,12 +286,7 @@ const RegisterPage = () => {
               </p>
             </div>
 
-            {/* Success State Notification */}
-            {success && (
-              <div className="mb-5">
-                <SuccessBanner message="Account created. Redirecting..." />
-              </div>
-            )}
+
 
             {/* API Error */}
             {apiError && (
@@ -344,7 +306,7 @@ const RegisterPage = () => {
                 value={form.name}
                 onChange={handleChange}
                 error={fieldErrors.name}
-                disabled={loading || success}
+                disabled={loading}
                 autoComplete="name"
                 autoFocus
               />
@@ -358,7 +320,7 @@ const RegisterPage = () => {
                 value={form.email}
                 onChange={handleChange}
                 error={fieldErrors.email}
-                disabled={loading || success}
+                disabled={loading}
                 autoComplete="email"
               />
 
@@ -379,7 +341,7 @@ const RegisterPage = () => {
                   value={form.password}
                   onChange={handleChange}
                   error={fieldErrors.password}
-                  disabled={loading || success}
+                  disabled={loading}
                   autoComplete="new-password"
                   rightElement={
                     <button
@@ -415,7 +377,7 @@ const RegisterPage = () => {
                   value={form.confirmPassword}
                   onChange={handleChange}
                   error={fieldErrors.confirmPassword}
-                  disabled={loading || success}
+                  disabled={loading}
                   autoComplete="new-password"
                   rightElement={
                     <button
@@ -438,9 +400,9 @@ const RegisterPage = () => {
               <motion.button
                 id="register-submit-btn"
                 type="submit"
-                disabled={loading || success}
-                whileHover={!(loading || success) ? { scale: 1.008 } : {}}
-                whileTap={!(loading || success) ? { scale: 0.992 } : {}}
+                disabled={loading}
+                whileHover={!loading ? { scale: 1.008 } : {}}
+                whileTap={!loading ? { scale: 0.992 } : {}}
                 className="mt-2.5 w-full flex items-center justify-center gap-2 rounded-lg py-3.5 text-[14px] font-semibold transition-all duration-200 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{
                   background: "#F5F4F2",
@@ -449,7 +411,7 @@ const RegisterPage = () => {
                   border: "1px solid rgba(255, 255, 255, 0.1)",
                 }}
                 onMouseEnter={(e) => {
-                  if (!(loading || success)) {
+                  if (!loading) {
                     e.currentTarget.style.background = "#DFD8CD"; // warm platinum hover
                   }
                 }}

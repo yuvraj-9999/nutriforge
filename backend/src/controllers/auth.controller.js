@@ -3,23 +3,54 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import model from "../config/gemini.js";
 import crypto from "crypto";
-import { sendPasswordResetEmail } from "../services/email.service.js";
-import { updateProfileSchema } from "../validations/profile.validation.js";
+import { sendPasswordResetEmail, sendVerificationEmail } from "../services/email.service.js";
 
 export const signup = async (req, res) => {
     try {
         const { name, email, password } = req.body;
 
+        const existingUser = await User.findOne({ email });
+
+        if (existingUser) {
+            return res.status(400).json({
+                success: false,
+                message: "Email already exists",
+            });
+        }
+
         const hashedPassword = await bcrypt.hash(password, 10);
+
+        const verificationToken = crypto.randomBytes(32).toString("hex");
+
+        const hashedVerificationToken = crypto.createHash("sha256").update(verificationToken).digest("hex");
 
         const user = await User.create({
             name,
             email,
             password: hashedPassword,
+            emailVerificationToken: hashedVerificationToken,
+            emailVerificationExpires: Date.now() + 24 * 60 * 60 * 1000,
         });
 
+        const verificationLink = `${process.env.APP_URL}/verify-email/${verificationToken}`;
+
+        const emailResponse = await sendVerificationEmail(
+            user.email,
+            user.name,
+            verificationLink
+        );
+
+        if (emailResponse.error) {
+            console.error(emailResponse.error);
+
+            return res.status(500).json({
+                success: false,
+                message: "Failed to send verification email.",
+            });
+        }
+
         res.status(201).json({
-            message: "User created successfully",
+            message: "Account created successfully! Please check your email to verify your account before signing in.",
             user,
         });
 
@@ -47,6 +78,13 @@ export const login = async (req, res) => {
         if (!isPasswordMatch) {
             return res.status(401).json({
                 message: "Invalid creadentials",
+            });
+        }
+
+        if (!user.isEmailVerified) {
+            return res.status(403).json({
+                success: false,
+                message: "Email not verified. Please verify your email.",
             });
         }
 
@@ -189,7 +227,7 @@ export const resetPassword = async (req, res) => {
         const { token } = req.params;
         const { password } = req.body;
 
-        if(!password){
+        if (!password) {
             return res.status(400).json({
                 success: false,
                 message: "Password is required",
@@ -200,10 +238,10 @@ export const resetPassword = async (req, res) => {
 
         const user = await User.findOne({
             passwordResetToken: hashedToken,
-            passwordResetExpires: {$gt: Date.now()}
+            passwordResetExpires: { $gt: Date.now() }
         });
 
-        if(!user){
+        if (!user) {
             return res.status(400).json({
                 success: false,
                 message: "Invalid or expired password reset token",
@@ -241,5 +279,44 @@ export const testAI = async (req, res) => {
         res.status(500).json({
             message: error.message,
         });
+    }
+};
+
+export const verifyEmail = async (req, res) => {
+    try {
+        const { token } = req.params;
+        
+        const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+        
+        const user = await User.findOne({
+            emailVerificationToken: hashedToken,
+            emailVerificationExpires: { $gt: Date.now() },
+        });
+
+        if (!user) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid or expired verification link",
+            });
+        }
+
+        user.isEmailVerified = true;
+        user.emailVerificationToken = undefined;
+        user.emailVerificationExpires = undefined;
+
+        await user.save();
+
+        return res.json({
+            success: true,
+            message: "Email verification successful",
+        })
+    } catch (error) {
+        console.error("VERIFY EMAIL ERROR:");
+        console.error(error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to verify email",
+        })
     }
 };

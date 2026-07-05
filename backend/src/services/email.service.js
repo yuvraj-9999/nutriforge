@@ -56,3 +56,50 @@ export const sendPasswordResetEmail = async (email, name, resetLink) => {
         console.error(error);
     }
 };
+
+export const sendVerificationEmail = async (email, name, verificationLink) => {
+   return await resend.emails.send({
+        from: "NutriForge <noreply@mail.goslings.online>",
+        to: email,
+        subject: "Verify your NutriForge account",
+        html: `
+            <div style="font-family: Arial, sans-serif; max-width:600px; margin:auto;">
+
+                <h2>Welcome to NutriForge</h2>
+
+                <p>Hi ${name},</p>
+
+                <p>
+                    Thank you for creating your NutriForge account.
+                </p>
+
+                <p>
+                    Please verify your email address to activate your account.
+                </p>
+
+                <p style="margin:30px 0;">
+                    <a
+                        href="${verificationLink}"
+                        style="
+                            background:#111827;
+                            color:#ffffff;
+                            padding:12px 24px;
+                            text-decoration:none;
+                            border-radius:8px;
+                            display:inline-block;
+                        "
+                    >
+                        Verify Email
+                    </a>
+                </p>
+
+                <p>This verification link will expire in 24 hours.</p>
+
+                <hr>
+
+                <p>— Team NutriForge</p>
+
+            </div>
+        `,
+    });
+};

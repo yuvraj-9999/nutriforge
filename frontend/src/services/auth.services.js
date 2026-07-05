@@ -69,3 +69,8 @@ export const resetPassword = async (token, password) => {
     const response = await api.post(`/api/v1/auth/reset-password/${token}`, {password});
     return response.data;
 };
+
+export const verifyEmail = async (token) => {
+    const response = await api.get(`/api/v1/auth/verify-email/${token}`);
+    return response.data;
+};

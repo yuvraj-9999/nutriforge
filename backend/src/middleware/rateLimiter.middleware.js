@@ -1,4 +1,4 @@
-import rateLimit from "express-rate-limit";
+import rateLimit, { ipKeyGenerator } from "express-rate-limit";
 
 export const aiRateLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
@@ -14,7 +14,6 @@ export const aiRateLimiter = rateLimit({
 
     legacyHeaders: false,
 
-    keyGenerator: (req) => {
-        return req.user?.userId || req.ip;
-    },
+   keyGenerator: (req) =>
+    req.user?.userId ?? ipKeyGenerator(req.ip)
 });
